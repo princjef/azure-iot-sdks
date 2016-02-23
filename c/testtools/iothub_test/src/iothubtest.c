@@ -405,6 +405,7 @@ IOTHUB_TEST_HANDLE IoTHubTest_Initialize(const char* eventhubConnString, const c
     }
     else if (RetrieveIotHubClientInfo(iothubConnString, devhubValInfo) != 0)
     {
+        LogError("Failure RetrieveIotHubClientInfo.\r\n");
         STRING_delete(devhubValInfo->consumerGroup);
         STRING_delete(devhubValInfo->eventhubAccessKey);
         STRING_delete(devhubValInfo->deviceId);
@@ -416,6 +417,7 @@ IOTHUB_TEST_HANDLE IoTHubTest_Initialize(const char* eventhubConnString, const c
     }
     else if (RetrieveEventHubClientInfo(eventhubConnString, devhubValInfo) != 0)
     {
+        LogError("Failure RetrieveEventHubClientInfo.\r\n");
         STRING_delete(devhubValInfo->consumerGroup);
         STRING_delete(devhubValInfo->eventhubAccessKey);
         STRING_delete(devhubValInfo->deviceId);
@@ -758,7 +760,7 @@ IOTHUB_TEST_CLIENT_RESULT IoTHubTest_ListenForEvent(IOTHUB_TEST_HANDLE devhubHan
 
 IOTHUB_TEST_CLIENT_RESULT IoTHubTest_ListenForRecentEvent(IOTHUB_TEST_HANDLE devhubHandle, pfIoTHubMessageCallback msgCallback, size_t partitionCount, void* context, double maxDrainTimeInSeconds)
 {
-	return IoTHubTest_ListenForEvent(devhubHandle, msgCallback, partitionCount, context, time(NULL), maxDrainTimeInSeconds);
+    return IoTHubTest_ListenForEvent(devhubHandle, msgCallback, partitionCount, context, time(NULL), maxDrainTimeInSeconds);
 }
 
 IOTHUB_TEST_CLIENT_RESULT IoTHubTest_ListenForEventForMaxDrainTime(IOTHUB_TEST_HANDLE devhubHandle, pfIoTHubMessageCallback msgCallback, size_t partitionCount, void* context)

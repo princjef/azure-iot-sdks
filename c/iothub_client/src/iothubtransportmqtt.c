@@ -82,12 +82,12 @@ static void defaultPrintLogFunction(unsigned int options, char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    (void)vprintf(format, args);
+    (void)vfprintf(stderr, format, args);
     va_end(args);
 
     if (options & LOG_LINE)
     {
-        (void)printf("\r\n");
+        (void)fprintf(stderr, "\r\n");
     }
 }
 

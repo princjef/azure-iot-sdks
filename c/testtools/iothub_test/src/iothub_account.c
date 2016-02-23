@@ -141,7 +141,7 @@ static int generateDeviceName(IOTHUB_ACCOUNT_INFO* accountInfo)
     struct tm* tmInfo = gmtime(&tmValue);
 
     size_t seedValue = tmInfo->tm_hour*tmInfo->tm_min*tmInfo->tm_sec;
-    LogInfo("seed value is %u.\r\n", seedValue);
+    LogInfo("seed value is %d.\r\n", seedValue);
     srand(seedValue);
 
     // Create psudo random device Id

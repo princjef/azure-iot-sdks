@@ -259,7 +259,6 @@ BEGIN_TEST_SUITE(iothubclient_http_e2etests)
 
     TEST_FUNCTION(IoTHub_HTTP_SendEvent_E2ETests)
     {
-#if 0
         // arrange
         IOTHUB_CLIENT_CONFIG iotHubConfig = { 0 };
         IOTHUB_CLIENT_HANDLE iotHubClientHandle;
@@ -321,7 +320,6 @@ BEGIN_TEST_SUITE(iothubclient_http_e2etests)
         EventData_Destroy(sendData);
 
         IoTHubClient_Destroy(iotHubClientHandle);
-#endif
     }
 
     #if 0

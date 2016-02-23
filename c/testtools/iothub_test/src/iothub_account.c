@@ -138,8 +138,11 @@ static int generateDeviceName(IOTHUB_ACCOUNT_INFO* accountInfo)
     int result;
 
     time_t tmValue = time(NULL);
-    LogInfo("Time Value returned %u.\r\n", (unsigned int)tmValue);
-    srand((unsigned int)tmValue);
+    struct tm* tmInfo = gmtime(&tmValue);
+
+    size_t seedValue = tmInfo->tm_hour*tmInfo->tm_min*tmInfo->tm_sec;
+    LogInfo("seed value is %u.\r\n", seedValue);
+    srand(seedValue);
 
     // Create psudo random device Id
     size_t len = strlen(DEVICE_PREFIX_FMT) + (MAX_LENGTH_OF_UNSIGNED_INT * 2) + MAX_LENGTH_OF_TIME_VALUE;
@@ -151,7 +154,7 @@ static int generateDeviceName(IOTHUB_ACCOUNT_INFO* accountInfo)
     }
     else
     {
-        (void)sprintf_s(accountInfo->deviceId, len + 1, DEVICE_PREFIX_FMT, rand() % MAX_RAND_VALUE, (unsigned int)tmValue, rand() % MAX_RAND_VALUE);
+        (void)sprintf_s(accountInfo->deviceId, len + 1, DEVICE_PREFIX_FMT, rand() % MAX_RAND_VALUE, seedValue, rand() % MAX_RAND_VALUE);
         LogInfo("Created Device %s.\r\n", accountInfo->deviceId);
         result = 0;
     }

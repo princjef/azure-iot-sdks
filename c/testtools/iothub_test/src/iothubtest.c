@@ -2,6 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+
 #ifdef _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
@@ -73,6 +76,19 @@ typedef struct MESSAGE_RECEIVER_CONTEXT_TAG
     void* context;
     bool message_received;
 } MESSAGE_RECEIVER_CONTEXT;
+
+static void defaultPrintLogFunction(unsigned int options, char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    (void)vfprintf(stderr, format, args);
+    va_end(args);
+
+    if (options & LOG_LINE)
+    {
+        (void)fprintf(stderr, "\r\n");
+    }
+}
 
 unsigned int ConvertToUnsignedInt(const unsigned char data[], int position)
 {
@@ -597,7 +613,7 @@ IOTHUB_TEST_CLIENT_RESULT IoTHubTest_ListenForEvent(IOTHUB_TEST_HANDLE devhubHan
                     LogError("Failed getting default TLS IO interface.\r\n");
                     result = IOTHUB_TEST_CLIENT_ERROR;
                 }
-                else if ((tls_io = xio_create(tlsio_interface, &tls_io_config, NULL)) == NULL)
+                else if ((tls_io = xio_create(tlsio_interface, &tls_io_config, defaultPrintLogFunction)) == NULL)
                 {
                     LogError("Failed creating the TLS IO.\r\n");
                     result = IOTHUB_TEST_CLIENT_ERROR;
@@ -606,7 +622,7 @@ IOTHUB_TEST_CLIENT_RESULT IoTHubTest_ListenForEvent(IOTHUB_TEST_HANDLE devhubHan
                 {
                     /* create the SASL client IO using the TLS IO */
                     SASLCLIENTIO_CONFIG sasl_io_config = { tls_io, sasl_mechanism_handle };
-                    if ((sasl_io = xio_create(saslclientio_get_interface_description(), &sasl_io_config, NULL)) == NULL)
+                    if ((sasl_io = xio_create(saslclientio_get_interface_description(), &sasl_io_config, defaultPrintLogFunction)) == NULL)
                     {
                         LogError("Failed creating the SASL IO.\r\n");
                         result = IOTHUB_TEST_CLIENT_ERROR;

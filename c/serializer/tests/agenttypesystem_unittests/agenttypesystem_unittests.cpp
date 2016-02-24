@@ -13580,20 +13580,6 @@ BEGIN_TEST_SUITE(AgentTypeSystem_UnitTests)
                            ASSERT_ARE_EQUAL(int, continousDays % 7, agentData.value.edmDateTimeOffset.dateTime.tm_wday);
                         }
 
-                        /*check also against mktime... */
-                        if (mktime(&witness) != (time_t)(-1)) /*double check with mktime for the range where mktime works*/
-                        {
-                            if (witness.tm_yday != agentData.value.edmDateTimeOffset.dateTime.tm_yday)
-                            {
-                                ASSERT_ARE_EQUAL(int, witness.tm_yday, agentData.value.edmDateTimeOffset.dateTime.tm_yday);
-                            }
-
-                            if (witness.tm_wday != agentData.value.edmDateTimeOffset.dateTime.tm_wday)
-                            {
-                                ASSERT_ARE_EQUAL(int, witness.tm_wday, agentData.value.edmDateTimeOffset.dateTime.tm_wday);
-                            }
-                        }
-
                         ///errr... go on!
 
                         if (index_day == 0)

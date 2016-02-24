@@ -30,8 +30,6 @@
 #include "jsonencoder.h"
 #include "multitree.h"
 
-#include "agenttime.h"
-
 #include "iot_logging.h"
 
 #define NaN_STRING "NaN"

@@ -13,8 +13,7 @@
 #include "micromockcharstararenullterminatedstrings.h"
 
 #include "agenttypesystem.h"
-#include "agenttime.h"
-#include "limits"
+#include <limits>
 #include "crt_abstractions.h"
 #include "strings.h"
 
@@ -3281,19 +3280,6 @@ const char*     truck1_truckStoppedStruct_locationAndFuel_geoLocation_field_name
 
 static STRING_HANDLE global_bufferTemp;
 static STRING_HANDLE bufferTemp2;
-
-
-static time_t mkgmtime(struct tm* tm)
-{
-    #ifdef _MSC_VER
-    return _mkgmtime(tm);
-#elif defined __GNUC__
-    return timegm(tm);
-#else
-#error implementation must have a function that converts from a struct tm* to a UTC time
-#endif
-}
-
 
 
 static const struct testVector {

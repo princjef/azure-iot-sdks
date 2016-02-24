@@ -29,7 +29,7 @@
 
 static const char* URL_API_VERSION = "api-version=2016-02-03";
 static const char* DEVICE_JSON_FMT = "{\"deviceId\":\"%s\",\"etag\":null,\"connectionState\":\"Disconnected\",\"status\":\"enabled\",\"statusReason\":null,\"connectionStateUpdatedTime\":\"0001-01-01T00:00:00\",\"statusUpdatedTime\":\"0001-01-01T00:00:00\",\"lastActivityTime\":\"0001-01-01T00:00:00\",\"authentication\":{\"symmetricKey\":{\"primaryKey\":null,\"secondaryKey\":null}}}";
-static const char* DEVICE_PREFIX_FMT = "e2eDevice_%d%u%d";
+static const char* DEVICE_PREFIX_FMT = "e2eDevice_%d%d%d%d%d";
 static const char* RELATIVE_PATH_FMT = "/devices/%s?%s";
 static const char* SHARED_ACCESS_KEY = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
 
@@ -141,8 +141,8 @@ static int generateDeviceName(IOTHUB_ACCOUNT_INFO* accountInfo)
     struct tm* tmInfo = gmtime(&tmValue);
 
     size_t seedValue = tmInfo->tm_hour*tmInfo->tm_min*tmInfo->tm_sec;
-    LogInfo("seed value is %d.\r\n", seedValue);
-    srand(seedValue);
+    LogInfo("TimeInfo h:%d m:%d s:%d.\r\n", tmInfo->tm_hour, tmInfo->tm_min, tmInfo->tm_sec);
+    srand((unsigned int)time(NULL));
 
     // Create psudo random device Id
     size_t len = strlen(DEVICE_PREFIX_FMT) + (MAX_LENGTH_OF_UNSIGNED_INT * 2) + MAX_LENGTH_OF_TIME_VALUE;
@@ -154,7 +154,7 @@ static int generateDeviceName(IOTHUB_ACCOUNT_INFO* accountInfo)
     }
     else
     {
-        (void)sprintf_s(accountInfo->deviceId, len + 1, DEVICE_PREFIX_FMT, rand() % MAX_RAND_VALUE, seedValue, rand() % MAX_RAND_VALUE);
+        (void)sprintf_s(accountInfo->deviceId, len + 1, DEVICE_PREFIX_FMT, rand() % MAX_RAND_VALUE, tmInfo->tm_hour, tmInfo->tm_min, tmInfo->tm_sec, rand() % MAX_RAND_VALUE);
         LogInfo("Created Device %s.\r\n", accountInfo->deviceId);
         result = 0;
     }

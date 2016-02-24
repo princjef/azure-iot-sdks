@@ -411,7 +411,7 @@ static int establishConnection(AMQP_TRANSPORT_INSTANCE* transport_state)
     {
         // Codes_SRS_IOTHUBTRANSPORTAMQP_09_136: [If transport_state->io_transport_provider_callback fails, IoTHubTransportAMQP_DoWork shall fail and return immediately]
         result = RESULT_FAILURE;
-		LogError("Failed to obtain a TLS I/O transport layer.\r\n");
+	LogError("Failed to obtain a TLS I/O transport layer %s:%d.\r\n", STRING_c_str(transport_state->iotHubHostFqdn), transport_state->iotHubPort);
     }
     // Codes_SRS_IOTHUBTRANSPORTAMQP_09_056: [IoTHubTransportAMQP_DoWork shall create the SASL mechanism using AMQP's saslmechanism_create() API] 
     else if ((transport_state->sasl_mechanism = saslmechanism_create(saslmssbcbs_get_interface(), NULL)) == NULL)

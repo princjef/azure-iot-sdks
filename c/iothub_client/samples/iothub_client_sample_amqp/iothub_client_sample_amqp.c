@@ -15,7 +15,7 @@
 #include "certs.h"
 #endif // MBED_BUILD_TIMESTAMP
 
-static const char* connectionString = "[device connection string]";
+static const char* connectionString = "HostName=iot-sdks-test.azure-devices.net;DeviceId=e2eDevice_4813416995138;SharedAccessKey=EQltIHEF72dHcRkdChGCmPHahp9FxTEYjGpsfuLDnBA=";
 static int callbackCounter;
 
 DEFINE_ENUM_STRINGS(IOTHUB_CLIENT_CONFIRMATION_RESULT, IOTHUB_CLIENT_CONFIRMATION_RESULT_VALUES);
@@ -104,6 +104,7 @@ static char propText[1024];
 
 void iothub_client_sample_amqp_run(void)
 {
+    IOTHUB_CLIENT_CONFIG iotHubConfig = { 0 };
     IOTHUB_CLIENT_HANDLE iotHubClientHandle;
 
     EVENT_INSTANCE messages[MESSAGE_COUNT];
@@ -122,7 +123,14 @@ void iothub_client_sample_amqp_run(void)
     }
     else
     {
-        if ((iotHubClientHandle = IoTHubClient_CreateFromConnectionString(connectionString, AMQP_Protocol)) == NULL)
+        iotHubConfig.iotHubName = "iot-sdks-test";
+        iotHubConfig.iotHubSuffix = "azure-devices.net";
+        iotHubConfig.deviceId = "e2eDevice_4813416995138";
+        iotHubConfig.deviceKey = "EQltIHEF72dHcRkdChGCmPHahp9FxTEYjGpsfuLDnBA=";
+        iotHubConfig.protocol = AMQP_Protocol;
+
+        if ( (iotHubClientHandle = IoTHubClient_Create(&iotHubConfig)) == NULL)
+        //if ((iotHubClientHandle = IoTHubClient_CreateFromConnectionString(connectionString, AMQP_Protocol)) == NULL)
         {
             (void)printf("ERROR: iotHubClientHandle is NULL!\r\n");
         }
